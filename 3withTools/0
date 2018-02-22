@@ -1,0 +1,13 @@
+clear && docker stack rm 2stack 3withtools && sleep 5 &&docker volume rm pgdata
+
+docker build -t pghero ./pghero/
+
+docker volume create pgdata
+
+docker stack deploy -c docker-compose.yml 3withtools
+
+docker stack ls && docker service ls && docker ps && docker volume ls
+
+#curl http://127.0.0.1:5050/ (pgadmin4@pgadmin.org/admin)
+#curl http://127.0.0.1:8080
+

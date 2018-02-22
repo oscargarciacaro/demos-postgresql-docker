@@ -1,0 +1,45 @@
+version: "3"
+services:
+  frontend:
+    image: mypgpool:latest
+    ports:
+      - "9999:9999"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - backend-a
+      - backend-b
+      - dbnet
+    networks:
+      dbnet:
+        aliases:
+          - frontend
+  backend-a:
+    image: backend-a:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - dbnet
+    networks:
+      dbnet:
+        aliases:
+         - backend-a
+  backend-b:
+    image: backend-b:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - backend-a
+      - dbnet
+    networks:
+      dbnet:
+        aliases:
+         - backend-b
+networks:
+  dbnet:

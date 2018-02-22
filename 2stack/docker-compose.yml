@@ -1,0 +1,19 @@
+version: "3"
+services:
+  backend-a:
+    image: mypg10:latest
+    ports:
+      - "5432:5432"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      default:
+        aliases:
+         - backend-a
+volumes:
+  pgdata:
+    external: true

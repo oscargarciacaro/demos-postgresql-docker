@@ -1,0 +1,16 @@
+clear 
+docker rm  -f mypostgresql
+docker volume rm pgdata
+
+
+docker build -t mypg10 ./postgresql10
+docker volume create pgdata
+docker run -d -p 5432:5432 \
+  --name mypostgresql  \
+  -v pgdata:/var/lib/postgresql/data  \
+  mypg10
+
+echo "psql -h localhost -p 5432 -U postgres"
+echo "\c mydb"
+echo "\d mytable"
+

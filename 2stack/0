@@ -1,0 +1,10 @@
+clear && docker stack rm 2stack && docker rm -f mypostgresql && docker volume rm pgdata
+
+docker volume create pgdata
+docker stack deploy -c docker-compose.yml 2stack
+sleep 5
+docker stack ls && docker service ls && docker ps && docker volume ls
+
+echo "psql -h localhost -p 5432 -U postgres"
+echo "\c mydb"
+echo "\d mytable"

@@ -1,0 +1,45 @@
+version: "3"
+services:
+  backend-a:
+    image: postgres:10.2
+    ports:
+      - "5432:5432"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      default:
+        aliases:
+         - backend-a
+  pghero:
+    image: pghero:latest
+    ports:
+      - "8080:8080"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - DATABASE_URL=postgres://postgres@backend-a:5432/postgres
+    networks:
+      default:
+        aliases:
+         - pghero
+  pgadmin:
+    image: fenglc/pgadmin4:latest
+    ports:
+      - "5050:5050"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      default:
+        aliases:
+         - pgadmin
+volumes:
+  pgdata:
+    external: true
